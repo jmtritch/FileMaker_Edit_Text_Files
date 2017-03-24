@@ -17,13 +17,13 @@ Base64Decode ( AsciiToBase64 ( [Text_Field_Name] ) { ; [Optional_file_name] } )
 
 Let's walk through how the function ```AsciiToBase64``` works.
 
-## AsciiToBase64
+### AsciiToBase64
 
 The ```AsciiToBase64``` function converts ASCII text to Base64 text.  It depends on some of the additional functions included in this repository, which are explored below. Using the classic example of ```Hello World```, we will walk through the steps of this function.
 
 First, the function converts the ```Hello World``` ASCII text to a text representation of its binary value.
 
-### AsciiToBin
+#### AsciiToBin
 
 The ```AsciiToBin``` function loops through all of the characters of the text and converts each character to its 8-bit binary value:
 
@@ -48,7 +48,7 @@ All together, ```AsciiToBin ( "Hello World" )``` produces:
 
 Now that we have our binary representation, we can convert it to Base64.
 
-### BinToBase64
+#### BinToBase64
 
 This function splits the binary text into groups of six bits.  It loops through each 6-bit binary number and converts each number to its corresponding Base64 character.  All of the characters convert as follows:
 ```
@@ -90,14 +90,14 @@ Base64ToAscii ( Base64Encode ( [Container_Name] ) )
 
 Now that our data is encoded as Base64 text, the custom function ```Base64ToAscii``` converts that text to ASCII text.
 
-## Base64ToAscii
+### Base64ToAscii
 The ```Base64ToAscii``` function converts Base64 text to ASCII text.  It depends on some of the additional functions included in this repository. Using our Base64 encoding of Hello World, ```SGVsbG8gV29ybGQ=```, we will walk through the steps of how this function works.  First, we need to convert this Base64 text to a text representation of its binary value.
 
-### BinToBase64
+#### BinToBase64
 
 This function simply loops through each character, and converts it to a 6-bit binary number.  It is the exact reverse of the steps above, and we get ```010010000110010101101100011011000110111100100000010101110110111101110010011011000110010000100001```.
 
-### BinToAscii
+#### BinToAscii
 This function splits the binary text into groups of eight bits, also known as a byte.  It loops through each byte, and converts the byte to its corresponding ASCII character.  It does this by converting each byte to its corresponding integer value using ```ByteToInt```, and FileMaker's ```Char``` function to convert the integer to the corresponding ASCII character.
 
 ## Final Thoughts
