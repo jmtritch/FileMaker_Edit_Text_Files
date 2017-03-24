@@ -71,9 +71,11 @@ This function splits the binary text into groups of six bits.  It loops through 
 The final binary number has only four bits.  It needs to be padded with two zeros to make a 6-bit number before it can be converted to Base64.
 
 **4 bits in last binary value**
+
 If we have a 4-bit final binary number, like above, then we pad it with two zeros to make a 6-bit binary number.  In this case, our ```0100``` becomes ```0100000```, which converts to ```Q```.  We're not done, though, because we need to let the Base64 reader know that we padded the last two bits.  To indicate a 2-bit padding, we add the character ```=```.  Our final binary set converts as follows: ```0100 -> Q= ```.
 
 **2 bits in last binary value**
+
 If we have a 2-bit final binary number, then we pad it with four zeros to make a 6-bit binary number.  In this case our ```01``` becomes ```0100000``` which converts to ```Q```.  To indicate a 4-bit padding, we add two equal signs, ```==```.  This final binary number would convert as follows: ```0100 -> Q==```.
 
 Now we have converted ```Hello World``` to binary and then to the Base64 text ```SGVsbG8gV29ybGQ=```.  This text is ready to be placed into a file using FileMaker's ```Base64Decode``` function, which will export the Base64 encoded text into a file.
