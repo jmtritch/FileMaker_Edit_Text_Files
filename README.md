@@ -1,7 +1,7 @@
 # FileMaker Edit Text Files
-This set of functions converts between ASCII and Base64 encoding.  When you couple these functions with FileMaker's native Base64Decode and Base64Encode functions, you can easily edit text files stored in containers.  I developed these functions specifically to support the iOS version of FileMaker, which does not allow for plugins.
+This set of functions converts between ASCII and Base64 encoding.  When you couple these functions with FileMaker's native [Base64Decode](http://www.filemaker.com/help/13/fmp/en/html/func_ref1.31.13.html) and [Base64Encode](http://www.filemaker.com/help/13/fmp/en/html/func_ref1.31.14.html) functions, you can easily edit text files stored in containers.  I developed these functions specifically to support the iOS version of FileMaker, which does not allow for plugins.
 
-Check out the example FileMaker file to see how these functions in action.  The functions all rely pretty heavily on recursion since FileMaker does not allow looping within functions.
+Check out the example [FileMaker file](https://github.com/jmtritch/FileMaker_Edit_Text_Files/blob/master/FileMaker_Text_File_Manipulation_Example.fmp12) to see how these functions in action.  The functions all rely pretty heavily on recursion since FileMaker does not allow looping within functions.
 
 The following explains at a fairly high level how these functions work to convert between ASCII and Base64.  Let's start by exploring how text can be exported to a file stored in a container.
 
