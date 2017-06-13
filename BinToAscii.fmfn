@@ -15,10 +15,13 @@
   Depends On:
          ByteToInt( text )
   Revision:
-         Last change: 27/09/2015 by JMT
+         Last change: 13/06/2017 by JMT
          ::
+         
+         13/06/2017 - JMT - Removed carriage adjustment for Windows
+                            because it was removing carriage returns
+                            for Macs
          27/09/2015 - JMT - Wrote original script
-	 13/06/2017 - JMT - Removed extra carraige adjustment for Windows
   ------------------------------------------------------------------------------
 */
 
