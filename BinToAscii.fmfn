@@ -18,6 +18,7 @@
          Last change: 27/09/2015 by JMT
          ::
          27/09/2015 - JMT - Wrote original script
+	 13/06/2017 - JMT - Removed extra carraige adjustment for Windows
   ------------------------------------------------------------------------------
 */
 
@@ -28,8 +29,7 @@ Let (
 		$curInt = ByteToInt ( Left ( text ; 8 ) ) ;
 
 		// Convert the integer value to the corresponding ASCII character
-		// But ignore Carriage Returns that Windows inserts
-		$curChar = If ( $curInt = 13 ; "" ; Char ( $curInt ) ) ;
+		$curChar = Char ( $curInt ) ;
 
 		// Convert the current byte to ASCII and add it to the end of
 		// the already converted ASCII text
