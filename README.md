@@ -1,19 +1,18 @@
 # FileMaker Edit Text Files
-This set of functions converts between ASCII and Base64 encoding.  When you couple these functions with FileMaker's native [Base64Decode](http://www.filemaker.com/help/13/fmp/en/html/func_ref1.31.13.html) and [Base64Encode](http://www.filemaker.com/help/13/fmp/en/html/func_ref1.31.14.html) functions, you can easily edit text files stored in containers.  I developed these functions specifically to support the iOS version of FileMaker, which does not allow for plugins.
+This set of functions allows you to read from a text file stored in a container and to write to a text file stored in a container.  It utilizes custom scripts and functions that convert between ASCII text and Base64 encoding.  When you couple this with FileMaker's native [Base64Decode](http://www.filemaker.com/help/13/fmp/en/html/func_ref1.31.13.html) and [Base64Encode](http://www.filemaker.com/help/13/fmp/en/html/func_ref1.31.14.html) functions, you can easily edit text files stored in containers.  I developed these functions specifically to support syncing data between offline databases deployed on iPads, which do not allow plugins.
 
-Check out the example [FileMaker file](https://github.com/jmtritch/FileMaker_Edit_Text_Files/blob/master/FileMaker_Text_File_Manipulation_Example.fmp12) to see how these functions in action.  The functions all rely pretty heavily on recursion since FileMaker does not allow looping within functions.
+Check out the example [FileMaker file](https://github.com/jmtritch/FileMaker_Edit_Text_Files/blob/master/FileMaker_Text_File_Manipulation_Example.fmp12) to see these scripts and functions in action.
 
-The following explains at a fairly high level how these functions work to convert between ASCII and Base64.  Let's start by exploring how text can be exported to a file stored in a container.
+The following explains at a fairly high level how these functions work to read and write to text files.  Let's start by exploring how to write to a file stored in a container.
 
-## Exporting Text
+## Limitations
+This set of custom functions relies heavily on recursion.  When converting more than a few thousand characters, the functions fail due to exceeding the [50,000 recursive calls limit](http://help.filemaker.com/app/answers/detail/a_id/11889/~/technical-specifications-of-filemaker-pro-13-and-filemaker-pro-13-advanced).  To get around this, I have added scripts that limit the recursive calls by looping through chunks of the text.  The __Ascii To Base64__ script limits the ```AsiiToBase64``` function to receive only 57 charcaters at a time as it loops through the text.  The __Base64 To Ascii__ script limits the ```Base64toAscii``` function to a single line of 76 characters.
 
-To export text from a field or variable to a container you only need a single calculation with two functions: 
+These functions are not fast.  Since each character is converted to a text representation of its binary value during the process, it takes time to convert between ASCII and Base64.  If you are running FileMaker on Windows or Mac and can install plugins, there are better options for extracting/inserting text from/into a file.
 
-```
-Base64Decode ( AsciiToBase64 ( [Text_Field_Name] ) { ; [Optional_file_name] } )
-```
+## Writing Text to a File --> ASCII To Base64 Script
 
-```AsciiToBase64``` converts the ASCII text to Base64 encoded text, and FileMaker's native function, ```Base64Decode``` converts that text back to true binary and sets it in the container specified in the calculation.  [Wikipedia](https://en.wikipedia.org/wiki/Base64) has a pretty good article explaining Base64 encoding.
+To write text to a file, use the __ASCII To Base64__ script and the native ```Base64Decode``` function.  __ASCII To Base64__ takes the ASCII text as a parameter and returns the corresponding Base64 text by utilizing the custom function ```AsciiToBase64```.  You can then insert the Base64 encoded text into a container by setting the container field with the FileMaker function, ```Base64Decode ( [ASCII_To_Base64_ScriptResult] {; [ Optional File Name ]} )```.
 
 Let's walk through how the function ```AsciiToBase64``` works.
 
@@ -80,17 +79,9 @@ If we have a 2-bit final binary number, then we pad it with four zeros to make a
 
 Now we have converted ```Hello World``` to binary and then to the Base64 text ```SGVsbG8gV29ybGQ=```.  This text is ready to be placed into a file using FileMaker's ```Base64Decode``` function, which will export the Base64 encoded text into a file.
 
-## Importing Text
+## Reading Text from a File --> Base64 To ASCII Script
 
-To import text from a container into a text field you only need a single calculation with two functions:
-
-```
-Base64ToAscii ( Base64Encode ( [Container_Name] ) )
-```
-
-```Base64Encode``` is a native FileMaker function that converts the file data in the provided container to Base64 encoding.  Base64 encoding essentially converts six binary bits to a character.  
-
-Now that our data is encoded as Base64 text, the custom function ```Base64ToAscii``` converts that text to ASCII text.
+To extract text from a file stored in a container, use the native ```Base64Encode``` function and the __Base64 To ASCII__ script.  It takes the Base64 encoded text as a parameter and returns the corresponding ASCII text by utilizing the custom function ```Base64ToAscii```.  If you pass the script ```Base64Encode ( TableName::FileName )```, where _TableName::fileName_ is the container field with your text file, it will return the ASCII text.  You can then manipulate that text or store it in a field, as needed.
 
 ### Base64ToAscii
 The ```Base64ToAscii``` function converts Base64 text to ASCII text.  It depends on some of the additional functions included in this repository. Using our Base64 encoding of Hello World, ```SGVsbG8gV29ybGQ=```, we will walk through the steps of how this function works.  First, we need to convert this Base64 text to a text representation of its binary value.
