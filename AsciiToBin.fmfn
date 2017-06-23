@@ -32,7 +32,7 @@ Let (
 		// Add the current ASCII character's binary representation to the existing binary text
 		// Windows encodes a new line character as both /r/n, and so its Code() conversion needs
 		// to be handled specially as IntToBin( number ) does not convert properly
-		$$binary = $$binary & If( intCode = 1000013 ; "0000110100001010" ; IntToByte ( GetAsNumber ( intCode ) ) );
+		$$binary = $$binary & If( intCode = 1000013 ; "00001010" ; IntToByte ( GetAsNumber ( intCode ) ) );
 
 		// Save the ASCII text as a local variable so that the global
 		// variable can be cleared before exiting the function
